@@ -1,0 +1,31 @@
+﻿<Window x:Name="MainMenu" x:Class="MyBookshelf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MyBookshelf"
+        mc:Ignorable="d"
+        Title="Main Menu" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+    <Window.Background>
+        <ImageBrush ImageSource="/BooksBackground.PNG"/>
+    </Window.Background>
+    <Grid>
+        <Label x:Name="TitleLabel" Content="My Bookshelf" FontFamily="Moonbeam" FontSize="34"
+               HorizontalContentAlignment="Center" FontWeight="Bold"/>
+        <WrapPanel Height="250" Width="550" Margin="50">
+            <Label Name="Inventory" Content="Book Inventory" FontFamily="Moonbeam" FontSize="26" 
+                   Margin="30" />
+            <Label Name="Reviews" Content="Reviews" FontFamily="Moonbeam" FontSize="26" 
+                   Margin="30" />
+            <Label Name="WishList" Content="Wishlist" FontFamily="Moonbeam" FontSize="26" 
+                   Margin="30"/>
+            <Label Name="Other" Content="Other Media" FontFamily="Moonbeam" FontSize="26" 
+                   Margin="30"/>
+            <Label Name="Reading" Content="My Reading" FontFamily="Moonbeam" FontSize="26" 
+                   Margin="0,30,30,30"/>
+            <Label Name="Setting" Content="Setting" FontFamily="Moonbeam" FontSize="26" 
+                   Margin="30"/>
+        </WrapPanel>
+
+    </Grid>
+</Window>
