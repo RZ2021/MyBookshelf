@@ -24,5 +24,11 @@ namespace MyBookshelf
         {
             InitializeComponent();
         }
+
+        private void Inventory_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Inventory inn = new Inventory();
+            inn.Show();
+        }
     }
 }

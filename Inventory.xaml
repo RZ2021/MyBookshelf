@@ -1,0 +1,31 @@
+﻿<Window x:Class="MyBookshelf.Inventory"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MyBookshelf"
+        mc:Ignorable="d"
+        Title="Book Inventory" Height="750" Width="1100" Background="#FF78EE78" WindowStartupLocation="CenterScreen" Cursor="">
+    <Grid x:Name="BookInventory">
+        <StackPanel>
+            <Label Name="TitleLabel" Content="Book Inventory" FontFamily="Moonbeam" FontSize="38" HorizontalContentAlignment="Center" Margin="5" />
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <Grid x:Name="BookIn" Height="550" Width="900">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="600" />
+                        <ColumnDefinition Width="150" />
+                    </Grid.ColumnDefinitions>
+
+                    
+
+                </Grid>
+            </ScrollViewer>
+            
+            <Button x:Name="Test" Content="Test" HorizontalAlignment="Center" Width="100" Height="40" Click="Test_Click"/>
+            <TextBlock Text="Hello world"/>
+            <TextBlock Text="Hello world"/>
+
+        </StackPanel>
+    </Grid>
+</Window>

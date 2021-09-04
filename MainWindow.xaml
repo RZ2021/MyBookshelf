@@ -12,18 +12,18 @@
     <Grid>
         <Label x:Name="TitleLabel" Content="My Bookshelf" FontFamily="Moonbeam" FontSize="34"
                HorizontalContentAlignment="Center" FontWeight="Bold"/>
-        <WrapPanel Height="250" Width="550" Margin="50">
+        <WrapPanel x:Name="ButtonsPanel" Height="250" Width="550" Margin="50" Panel.ZIndex="3">
             <Label Name="Inventory" Content="Book Inventory" FontFamily="Moonbeam" FontSize="26" 
-                   Margin="30" />
+                   Margin="60,30,0,30" PreviewMouseLeftButtonUp="Inventory_PreviewMouseLeftButtonUp"/>
             <Label Name="Reviews" Content="Reviews" FontFamily="Moonbeam" FontSize="26" 
                    Margin="30" />
             <Label Name="WishList" Content="Wishlist" FontFamily="Moonbeam" FontSize="26" 
-                   Margin="30"/>
-            <Label Name="Other" Content="Other Media" FontFamily="Moonbeam" FontSize="26" 
-                   Margin="30"/>
+                   Margin="15,30,30,30"/>
             <Label Name="Reading" Content="My Reading" FontFamily="Moonbeam" FontSize="26" 
-                   Margin="0,30,30,30"/>
-            <Label Name="Setting" Content="Setting" FontFamily="Moonbeam" FontSize="26" 
+                   Margin="60,30,30,30"/>
+            <Label Name="Other" Content="Other" FontFamily="Moonbeam" FontSize="26" 
+                   Margin="30"/>
+            <Label Name="Settings" Content="Settings" FontFamily="Moonbeam" FontSize="26" 
                    Margin="30"/>
         </WrapPanel>
 
