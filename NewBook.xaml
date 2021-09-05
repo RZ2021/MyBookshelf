@@ -1,0 +1,17 @@
+﻿<Window x:Class="MyBookshelf.NewBook"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MyBookshelf"
+        mc:Ignorable="d"
+        Title="NewBook" Height="500" Width="700" Background="#FF78EE78" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height = "250"/>
+            <RowDefinition Height = "250"/>
+        </Grid.RowDefinitions>
+
+        <Label Content="Add A New Book" Grid.Row ="0" FontSize="26" HorizontalContentAlignment="Center"/>
+    </Grid>
+</Window>

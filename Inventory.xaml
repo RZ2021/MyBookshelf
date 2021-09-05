@@ -9,22 +9,22 @@
     <Grid x:Name="BookInventory">
         <StackPanel>
             <Label Name="TitleLabel" Content="Book Inventory" FontFamily="Moonbeam" FontSize="38" HorizontalContentAlignment="Center" Margin="5" />
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                <Grid x:Name="BookIn" Height="550" Width="900">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="150" />
-                        <ColumnDefinition Width="600" />
-                        <ColumnDefinition Width="150" />
-                    </Grid.ColumnDefinitions>
+            <Border BorderBrush="Black" BorderThickness="1" Width="700">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Height="550" Width="700">
 
-                    
+                    <Grid x:Name="BookIn" Width="700" ShowGridLines="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="350" />
+                            <ColumnDefinition Width="150" />
+                        </Grid.ColumnDefinitions>
 
-                </Grid>
-            </ScrollViewer>
-            
-            <Button x:Name="Test" Content="Test" HorizontalAlignment="Center" Width="100" Height="40" Click="Test_Click"/>
-            <TextBlock Text="Hello world"/>
-            <TextBlock Text="Hello world"/>
+
+                    </Grid>
+                </ScrollViewer>
+            </Border>
+            <Button x:Name="Test" Content="Test" Margin="10" HorizontalAlignment="Center" Width="100" Height="40" Click="Test_Click"/>
+            <Button x:Name="Add" Content="Add" Margin="10" HorizontalAlignment="Center" Width="100" Height="40" Click="Add_Click"/>
 
         </StackPanel>
     </Grid>

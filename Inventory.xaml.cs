@@ -44,101 +44,97 @@ namespace MyBookshelf
                         {
                             num -= 1;
                         }
-                        BookIn.RowDefinitions[num].Height = new GridLength(150);
-
+                        BookIn.RowDefinitions[num].Height = new GridLength(175);
+                        
                         StackPanel sp = new StackPanel();
-
-                        Label bk = new Label
+                        sp.Orientation = Orientation.Vertical;
+                        TextBlock bk = new TextBlock
                         {
                             Name = "BksLabel",
-                            Content = rd["BookTitle"].ToString(),
-                            FontSize = 16,
-                            Margin = new Thickness(0, 0, 0, 0),
-                            HorizontalContentAlignment = HorizontalAlignment.Left,
+                            Text = "Title: " + rd["BookTitle"].ToString(),
+                            FontSize = 20,
+                            Margin = new Thickness(10, 10, 0, 0),
                             FontFamily = new FontFamily("Moonbeam")
-
                         };
-                        Grid.SetRow(bk, num);
-                        Grid.SetColumn(bk, 1);
-
-                        Label au = new Label
+                       
+                        TextBlock au = new TextBlock
                         {
                             Name = "AuthLabel",
-                            Content = rd["BookAuthor"].ToString(),
-                            FontSize = 16,
-                            Margin = new Thickness(50, 0, 0, 0),
-                            FontFamily = new FontFamily("Moonbeam")
-
+                            Text = "Author: " + rd["BookAuthor"].ToString(),
+                            FontSize = 20,
+                            Margin = new Thickness(10, 10, 0, 0),
+                            FontFamily = new FontFamily("Moonbeam"),
+                            TextWrapping = TextWrapping.Wrap
                         };
-                        Grid.SetRow(au, num);
-                        Grid.SetColumn(au, 1);
-
-                        Label format = new Label
+                       
+                        TextBlock format = new TextBlock
                         {
                             Name = "ForLabel",
-                            Content = rd["Format"].ToString(),
-                            FontSize = 16,
-                            Margin = new Thickness(50, 500, 0, 0),
-                            FontFamily = new FontFamily("Moonbeam")
-
+                            Text = "Format: " + rd["Format"].ToString(),
+                            FontSize = 20,
+                            Margin = new Thickness(10, 10, 0, 0),
+                            FontFamily = new FontFamily("Moonbeam"),
+                            TextWrapping = TextWrapping.Wrap
                         };
-                        Grid.SetRow(format, num);
-                        Grid.SetColumn(format, 1);
-
-                        Label isbn = new Label
+                        
+                        TextBlock isbn = new TextBlock
                         {
                             Name = "isbnLabel",
-                            Content = rd["ISBN"].ToString(),
-                            FontSize = 16,
-                            Margin = new Thickness(0, 50, 0, 0),
-                            FontFamily = new FontFamily("Moonbeam")
-
+                            Text = "ISBN: " + rd["ISBN"].ToString(),
+                            FontSize = 20,
+                            Margin = new Thickness(10, 10, 0, 0),
+                            FontFamily = new FontFamily("Moonbeam"),
+                            TextWrapping = TextWrapping.Wrap
                         };
-                        Grid.SetRow(isbn, num);
-                        Grid.SetColumn(isbn, 1);
-
-                        Label notes = new Label
+                        
+                        TextBlock notes = new TextBlock
                         {
                             Name = "NotesLabel",
-                            Content = rd["Notes"].ToString(),
-                            FontSize = 16,
-                            Margin = new Thickness(0, 100, 0, 0),
-                            FontFamily = new FontFamily("Moonbeam")
-
+                            Text = "Notes: " + rd["Notes"].ToString(),
+                            FontSize = 20,
+                            Margin = new Thickness(10, 10, 0, 0),
+                            FontFamily = new FontFamily("Moonbeam"),
+                            TextWrapping = TextWrapping.Wrap
                         };
-                        Grid.SetRow(notes, num);
-                        Grid.SetColumn(notes, 1);
-
-                        Label tags = new Label
+                        
+                        TextBlock tags = new TextBlock
                         {
                             Name = "TagLabel",
-                            Content = rd["Tags"].ToString(),
-                            FontSize = 16,
-                            Margin = new Thickness(0, 0, 0, 0),
-                            FontFamily = new FontFamily("Moonbeam")
-                            
-
+                            Text = "Tags:\n" + rd["Tags"].ToString(),
+                            FontSize = 20,
+                            Margin = new Thickness(0, 0, 30, 0),
+                            FontFamily = new FontFamily("Moonbeam"),
+                            TextWrapping = TextWrapping.Wrap
                         };
+
                         Grid.SetRow(tags, num);
                         Grid.SetColumn(tags, 2);
+
+                        Grid.SetRow(sp, num);
+                        Grid.SetColumn(sp, 1);
+                        sp.Children.Add(bk);
+                        sp.Children.Add(au);
+                        sp.Children.Add(format);
+                        sp.Children.Add(isbn);
+                        sp.Children.Add(notes);
+
                         BookIn.Children.Add(sp);
-                        BookIn.Children.Add(bk);
-                        BookIn.Children.Add(au);
-                        BookIn.Children.Add(format);
-                        BookIn.Children.Add(isbn);
-                        BookIn.Children.Add(notes);
                         BookIn.Children.Add(tags);
+
                     }
                 }
             }
-            
-
-
         }
 
         private void Test_Click(object sender, RoutedEventArgs e)
         {
             GetInventory();
+        }
+
+        private void Add_Click(object sender, RoutedEventArgs e)
+        {
+            NewBook nb = new NewBook();
+            nb.Show();
         }
     }
 }
