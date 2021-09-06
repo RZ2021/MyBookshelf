@@ -20,14 +20,16 @@ namespace MyBookshelf
     /// </summary>
     public partial class MainWindow : Window
     {
+        private int userId;
         public MainWindow()
         {
             InitializeComponent();
+            userId = 1;
         }
 
         private void Inventory_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            Inventory inn = new Inventory();
+            Inventory inn = new Inventory(userId);
             inn.Show();
         }
     }

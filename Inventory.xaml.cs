@@ -10,6 +10,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data.SqlClient;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 namespace MyBookshelf
 {
@@ -18,9 +20,11 @@ namespace MyBookshelf
     /// </summary>
     public partial class Inventory : Window
     {
-        public Inventory()
+        private int userId;
+        public Inventory(int user)
         {
             InitializeComponent();
+            userId = user;
         }
 
         private void GetInventory()
@@ -107,11 +111,25 @@ namespace MyBookshelf
                             TextWrapping = TextWrapping.Wrap
                         };
 
+                        Image covers = new Image
+                        {
+                            Name = "Covers",
+                            Height = 200,
+                            Width = 150,
+                            Margin = new Thickness(20,20,20,20)
+                        };
+
+                        byte[] by = GetCovers(rd["Cover"]);
+
                         Grid.SetRow(tags, num);
                         Grid.SetColumn(tags, 2);
 
+                        Grid.SetRow(covers, num);
+                        Grid.SetColumn(covers, 0);
+
                         Grid.SetRow(sp, num);
                         Grid.SetColumn(sp, 1);
+
                         sp.Children.Add(bk);
                         sp.Children.Add(au);
                         sp.Children.Add(format);
@@ -126,6 +144,17 @@ namespace MyBookshelf
             }
         }
 
+        private byte[] GetCovers(Object obj)
+        {
+            if (obj == null)
+                return null;
+            BinaryFormatter bf = new BinaryFormatter();
+            MemoryStream ms = new MemoryStream();
+            bf.Serialize(ms, obj);
+            return ms.ToArray();
+
+        }
+
         private void Test_Click(object sender, RoutedEventArgs e)
         {
             GetInventory();
@@ -133,7 +162,7 @@ namespace MyBookshelf
 
         private void Add_Click(object sender, RoutedEventArgs e)
         {
-            NewBook nb = new NewBook();
+            NewBook nb = new NewBook(userId);
             nb.Show();
         }
     }
