@@ -5,13 +5,108 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyBookshelf"
         mc:Ignorable="d"
-        Title="NewBook" Height="500" Width="700" Background="#FF78EE78" WindowStartupLocation="CenterScreen">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height = "250"/>
-            <RowDefinition Height = "250"/>
-        </Grid.RowDefinitions>
+        Title="NewBook" Height="600" Width="900" Background="#FF78EE78" WindowStartupLocation="CenterScreen">
 
-        <Label Content="Add A New Book" Grid.Row ="0" FontSize="26" HorizontalContentAlignment="Center"/>
-    </Grid>
+    <StackPanel>
+        <Grid Height="Auto" Width="Auto">
+            <Grid.RowDefinitions>
+                <RowDefinition Height = "Auto"/>
+                <RowDefinition Height = "Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="Add A New Book" Grid.Row ="0" FontSize="26" FontFamily="Moonbeam" HorizontalAlignment="Right"/>
+
+            <StackPanel Grid.Row="1" Height="Auto" Width="Auto" HorizontalAlignment="Center">
+                <Label Content="Book Title:" FontFamily="Moonbeam" FontSize="20" Margin="0,0,0,0" />
+                <TextBox FontFamily="Moonbeam" FontSize="16" Height="35" Width="400" HorizontalAlignment="Left" Margin="5,0,0,0"/>
+                <Label Content="Book Author:" FontFamily="Moonbeam" FontSize="20" Margin="0,5,0,0" />
+                <TextBox FontFamily="Moonbeam" FontSize="16" Height="35" Width="400" HorizontalAlignment="Left" Margin="5,0,0,0"/>
+                <Label Content="Book Format:" FontFamily="Moonbeam" FontSize="20" Margin="0,5,0,0" />
+                <ComboBox FontFamily="Moonbeam" FontSize="16" Height="35" Width="400" HorizontalAlignment="Left" Margin="5,0,0,0">
+                    <ComboBoxItem Content="Hardcover"/>
+                    <ComboBoxItem Content="Softcover"/>
+                    <ComboBoxItem Content="eBook"/>
+                    <ComboBoxItem Content="Audiobook"/>
+                </ComboBox>
+                <Label Content="Book ISBN:" FontFamily="Moonbeam" FontSize="20" Margin="0,5,0,0" />
+                <TextBox FontFamily="Moonbeam" FontSize="16" Height="35" Width="400" HorizontalAlignment="Left" Margin="5,0,0,0"/>
+                <Label Content="Notes:" FontFamily="Moonbeam" FontSize="20" Margin="0,5,0,0" />
+                <TextBox FontFamily="Moonbeam" FontSize="16" Height="75" Width="400" HorizontalAlignment="Left" Margin="5,0,0,0"/>
+                <Button x:Name="Add" Content="Add" Height="40" Width="125" HorizontalAlignment="Center" Margin="30"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Grid.Row="1" Width="Auto">
+                <Border BorderBrush="Black" BorderThickness="2" Height="200" Width="150" Margin="30,20,30,0">
+                    <Image Width="150" Height="200"/>
+                </Border>
+                <Button Content="Get Cover" Height="40" Width="125" Margin="0,20,05,0" Click="Button_Click"/>
+                <Label Content="Choose your Tags:" FontFamily="Moonbeam" FontSize="24" HorizontalAlignment="Center" Margin="10"   />
+                <StackPanel Orientation="Horizontal">
+                    <ListBox Margin="50,0,0,0" Name="TagsBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto" Height="Auto">
+                        <ListBoxItem  FontFamily="Moonbeam" FontSize="20" FontWeight="Bold">
+                            <CheckBox Name="FantasyChecks">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Fantasy"></TextBlock>
+                                </StackPanel>
+                            </CheckBox>
+                        </ListBoxItem>
+                        <ListBoxItem  FontFamily="Moonbeam" FontSize="20" FontWeight="Bold">
+                            <CheckBox Name="ContempChecks">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Contemporary"></TextBlock>
+                                </StackPanel>
+                            </CheckBox>
+                        </ListBoxItem>
+                        <ListBoxItem  FontFamily="Moonbeam" FontSize="20" FontWeight="Bold">
+                            <CheckBox Name="MysteryChecks">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Mystery"></TextBlock>
+                                </StackPanel>
+                            </CheckBox>
+                        </ListBoxItem>
+                        <ListBoxItem  FontFamily="Moonbeam" FontSize="20" FontWeight="Bold">
+                            <CheckBox Name="HorrorChecks">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Horror"></TextBlock>
+                                </StackPanel>
+                            </CheckBox>
+                        </ListBoxItem>
+                    </ListBox>
+                    <ListBox Margin="10,0,0,0" Name="TagsBoxs" VerticalAlignment="Top" Width="Auto" Height="Auto">
+                        <ListBoxItem  FontFamily="Moonbeam" FontSize="20" FontWeight="Bold">
+                            <CheckBox Name="FantassyChecks">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Fantasy"></TextBlock>
+                                </StackPanel>
+                            </CheckBox>
+                        </ListBoxItem>
+                        <ListBoxItem  FontFamily="Moonbeam" FontSize="20" FontWeight="Bold">
+                            <CheckBox Name="ContemsChecks">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Contemporary"></TextBlock>
+                                </StackPanel>
+                            </CheckBox>
+                        </ListBoxItem>
+                        <ListBoxItem  FontFamily="Moonbeam" FontSize="20" FontWeight="Bold">
+                            <CheckBox Name="MystesryChecks">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Mystery"></TextBlock>
+                                </StackPanel>
+                            </CheckBox>
+                        </ListBoxItem>
+                        <ListBoxItem  FontFamily="Moonbeam" FontSize="20" FontWeight="Bold">
+                            <CheckBox Name="HorrorChscks">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Horrors"></TextBlock>
+                                </StackPanel>
+                            </CheckBox>
+                        </ListBoxItem>
+                    </ListBox>
+                </StackPanel>
+                
+            </StackPanel>
+        </Grid>
+    </StackPanel>
 </Window>
