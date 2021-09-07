@@ -21,10 +21,23 @@
 
 
                     </Grid>
+                    
                 </ScrollViewer>
             </Border>
-            <Button x:Name="Test" Content="Test" Margin="10" HorizontalAlignment="Center" Width="100" Height="40" Click="Test_Click"/>
-            <Button x:Name="Add" Content="Add" Margin="10" HorizontalAlignment="Center" Width="100" Height="40" Click="Add_Click"/>
+            <StackPanel Orientation="Horizontal" Margin="10" Width="700">
+                <ComboBox Name="SearchTerm" Width="150" Height="35" Margin="70,0,0,0" FontFamily="Moonbeam" FontSize="20">
+                    <ComboBoxItem Content="Title" FontFamily="Moonbeam" FontSize="20"/>
+                    <ComboBoxItem Content="Author" FontFamily="Moonbeam" FontSize="20"/>
+                    <ComboBoxItem Content="Format" FontFamily="Moonbeam" FontSize="20"/>
+                    <ComboBoxItem Content="ISBN" FontFamily="Moonbeam" FontSize="20"/>
+                    <ComboBoxItem Content="Tags" FontFamily="Moonbeam" FontSize="20"/>
+                </ComboBox>
+                <TextBox Name="SearchBox" Height="35" Width="300" Margin="20,0,0,0"/>
+                <Button x:Name="Test" Content="Search" Margin="5" HorizontalAlignment="Center" Width="100" Height="40" Click="Test_Click"/>
+
+            </StackPanel>
+            <Button x:Name="Add" Content="Add New Book" HorizontalAlignment="Center" Width="100" Height="40" Click="Add_Click"/>
+
 
         </StackPanel>
     </Grid>

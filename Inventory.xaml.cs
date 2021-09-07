@@ -12,6 +12,7 @@ using System.Windows.Shapes;
 using System.Data.SqlClient;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using System.Drawing;
 
 namespace MyBookshelf
 {
@@ -21,19 +22,21 @@ namespace MyBookshelf
     public partial class Inventory : Window
     {
         private int userId;
+
         public Inventory(int user)
         {
             InitializeComponent();
             userId = user;
+            string sql = "SELECT * FROM BookInventory WHERE UserId = @id";
+            GetInventory(sql);
         }
 
-        private void GetInventory()
+        private void GetInventory(string sql)
         {
             Books book = new Books();
             string con = @"Data Source=MasterBlaster\SQLEXPRESS;Initial Catalog=MyBookshelf;Integrated Security=True";
             using (SqlConnection myConnect = new SqlConnection(con))
             {
-                string sql = "SELECT * FROM BookInventory WHERE UserId = @id";
                 SqlCommand cmd = new SqlCommand(sql, myConnect);
                 cmd.Parameters.AddWithValue("@id", 1);
                 myConnect.Open();
@@ -48,7 +51,7 @@ namespace MyBookshelf
                         {
                             num -= 1;
                         }
-                        BookIn.RowDefinitions[num].Height = new GridLength(175);
+                        BookIn.RowDefinitions[num].Height = new GridLength(200);
                         
                         StackPanel sp = new StackPanel();
                         sp.Orientation = Orientation.Vertical;
@@ -58,7 +61,7 @@ namespace MyBookshelf
                             Text = "Title: " + rd["BookTitle"].ToString(),
                             FontSize = 20,
                             Margin = new Thickness(10, 10, 0, 0),
-                            FontFamily = new FontFamily("Moonbeam")
+                            FontFamily = new System.Windows.Media.FontFamily("Moonbeam")
                         };
                        
                         TextBlock au = new TextBlock
@@ -67,7 +70,7 @@ namespace MyBookshelf
                             Text = "Author: " + rd["BookAuthor"].ToString(),
                             FontSize = 20,
                             Margin = new Thickness(10, 10, 0, 0),
-                            FontFamily = new FontFamily("Moonbeam"),
+                            FontFamily = new System.Windows.Media.FontFamily("Moonbeam"),
                             TextWrapping = TextWrapping.Wrap
                         };
                        
@@ -77,7 +80,7 @@ namespace MyBookshelf
                             Text = "Format: " + rd["Format"].ToString(),
                             FontSize = 20,
                             Margin = new Thickness(10, 10, 0, 0),
-                            FontFamily = new FontFamily("Moonbeam"),
+                            FontFamily = new System.Windows.Media.FontFamily("Moonbeam"),
                             TextWrapping = TextWrapping.Wrap
                         };
                         
@@ -87,7 +90,7 @@ namespace MyBookshelf
                             Text = "ISBN: " + rd["ISBN"].ToString(),
                             FontSize = 20,
                             Margin = new Thickness(10, 10, 0, 0),
-                            FontFamily = new FontFamily("Moonbeam"),
+                            FontFamily = new System.Windows.Media.FontFamily("Moonbeam"),
                             TextWrapping = TextWrapping.Wrap
                         };
                         
@@ -97,7 +100,7 @@ namespace MyBookshelf
                             Text = "Notes: " + rd["Notes"].ToString(),
                             FontSize = 20,
                             Margin = new Thickness(10, 10, 0, 0),
-                            FontFamily = new FontFamily("Moonbeam"),
+                            FontFamily = new System.Windows.Media.FontFamily("Moonbeam"),
                             TextWrapping = TextWrapping.Wrap
                         };
                         
@@ -107,19 +110,41 @@ namespace MyBookshelf
                             Text = "Tags:\n" + rd["Tags"].ToString(),
                             FontSize = 20,
                             Margin = new Thickness(0, 0, 30, 0),
-                            FontFamily = new FontFamily("Moonbeam"),
+                            FontFamily = new System.Windows.Media.FontFamily("Moonbeam"),
                             TextWrapping = TextWrapping.Wrap
                         };
 
-                        Image covers = new Image
+                        System.Windows.Controls.Image covers = new System.Windows.Controls.Image
                         {
                             Name = "Covers",
                             Height = 200,
-                            Width = 150,
-                            Margin = new Thickness(20,20,20,20)
+                            Width = 125,
+                            Margin = new Thickness(20, 20, 20, 20),
+                            Stretch = Stretch.Fill
                         };
 
-                        byte[] by = GetCovers(rd["Cover"]);
+                        
+                        if(rd["Cover"] != DBNull.Value)
+                        {
+                            Bitmap cov;
+                            using (var ms = new MemoryStream((byte[])rd["Cover"]))
+                            {
+                                cov = new Bitmap(ms);
+                            }
+
+                            using (var ms = new MemoryStream())
+                            {
+                                cov.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                                ms.Position = 0;
+
+                                var bi = new BitmapImage();
+                                bi.BeginInit();
+                                bi.CacheOption = BitmapCacheOption.OnLoad;
+                                bi.StreamSource = ms;
+                                bi.EndInit();
+                                covers.Source = bi;
+                            }
+                        }
 
                         Grid.SetRow(tags, num);
                         Grid.SetColumn(tags, 2);
@@ -138,26 +163,28 @@ namespace MyBookshelf
 
                         BookIn.Children.Add(sp);
                         BookIn.Children.Add(tags);
+                        BookIn.Children.Add(covers);
 
                     }
                 }
             }
         }
 
-        private byte[] GetCovers(Object obj)
+        private System.Drawing.Image GetCovers(byte[] pic)
         {
-            if (obj == null)
-                return null;
-            BinaryFormatter bf = new BinaryFormatter();
-            MemoryStream ms = new MemoryStream();
-            bf.Serialize(ms, obj);
-            return ms.ToArray();
+            MemoryStream ms = new MemoryStream(pic);
+            System.Drawing.Image cover = System.Drawing.Image.FromStream(ms);
+            return cover;
 
         }
+        
+
 
         private void Test_Click(object sender, RoutedEventArgs e)
         {
-            GetInventory();
+            string sql;
+            var item = SearchTerm.SelectedItem as ComboBoxItem;
+            string choice = item.Content.ToString();
         }
 
         private void Add_Click(object sender, RoutedEventArgs e)

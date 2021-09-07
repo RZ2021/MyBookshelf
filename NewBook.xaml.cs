@@ -11,6 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data.SqlClient;
 using System.IO;
+using System.Drawing;
 
 namespace MyBookshelf
 {
@@ -55,6 +56,7 @@ namespace MyBookshelf
             }
             string tags = String.Join(",", BookTags);
             byte[] cover = GetCover((BitmapSource)Cover.ImageSource);
+            
 
             string server = @"Data Source=MasterBlaster\SQLEXPRESS;Initial Catalog=MyBookshelf;Integrated Security=True";
             using(SqlConnection con = new SqlConnection(server))
