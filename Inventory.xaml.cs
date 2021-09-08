@@ -27,14 +27,15 @@ namespace MyBookshelf
         {
             InitializeComponent();
             userId = user;
-            string sql = "SELECT * FROM BookInventory WHERE UserId = @id";
-            GetInventory(sql);
+            GetInventory();
         }
 
-        private void GetInventory(string sql)
+        private void GetInventory()
         {
-            Books book = new Books();
+            
             string con = @"Data Source=MasterBlaster\SQLEXPRESS;Initial Catalog=MyBookshelf;Integrated Security=True";
+            string sql = "SELECT * FROM BookInventory WHERE UserId = @id";
+
             using (SqlConnection myConnect = new SqlConnection(con))
             {
                 SqlCommand cmd = new SqlCommand(sql, myConnect);
@@ -43,7 +44,7 @@ namespace MyBookshelf
 
                 using(SqlDataReader rd = cmd.ExecuteReader())
                 {
-                    while(rd.Read())
+                    while (rd.Read())
                     {
                         BookIn.RowDefinitions.Add(new RowDefinition());
                         int num = BookIn.RowDefinitions.Count;
@@ -52,28 +53,28 @@ namespace MyBookshelf
                             num -= 1;
                         }
                         BookIn.RowDefinitions[num].Height = new GridLength(200);
-                        
+
                         StackPanel sp = new StackPanel();
                         sp.Orientation = Orientation.Vertical;
                         TextBlock bk = new TextBlock
                         {
                             Name = "BksLabel",
-                            Text = "Title: " + rd["BookTitle"].ToString(),
+                            Text = "Title: " + rd["BookTitle"].ToString() + "   Author: " + rd["BookAuthor"].ToString(),
                             FontSize = 20,
                             Margin = new Thickness(10, 10, 0, 0),
                             FontFamily = new System.Windows.Media.FontFamily("Moonbeam")
                         };
-                       
-                        TextBlock au = new TextBlock
-                        {
-                            Name = "AuthLabel",
-                            Text = "Author: " + rd["BookAuthor"].ToString(),
-                            FontSize = 20,
-                            Margin = new Thickness(10, 10, 0, 0),
-                            FontFamily = new System.Windows.Media.FontFamily("Moonbeam"),
-                            TextWrapping = TextWrapping.Wrap
-                        };
-                       
+
+                        //TextBlock au = new TextBlock
+                        //{
+                        //    Name = "AuthLabel",
+                        //    Text = "\tAuthor: " + rd["BookAuthor"].ToString(),
+                        //    FontSize = 20,
+                        //    Margin = new Thickness(10, 10, 0, 0),
+                        //    FontFamily = new System.Windows.Media.FontFamily("Moonbeam"),
+                        //    TextWrapping = TextWrapping.Wrap
+                        //};
+
                         TextBlock format = new TextBlock
                         {
                             Name = "ForLabel",
@@ -83,7 +84,7 @@ namespace MyBookshelf
                             FontFamily = new System.Windows.Media.FontFamily("Moonbeam"),
                             TextWrapping = TextWrapping.Wrap
                         };
-                        
+
                         TextBlock isbn = new TextBlock
                         {
                             Name = "isbnLabel",
@@ -93,7 +94,7 @@ namespace MyBookshelf
                             FontFamily = new System.Windows.Media.FontFamily("Moonbeam"),
                             TextWrapping = TextWrapping.Wrap
                         };
-                        
+
                         TextBlock notes = new TextBlock
                         {
                             Name = "NotesLabel",
@@ -103,7 +104,7 @@ namespace MyBookshelf
                             FontFamily = new System.Windows.Media.FontFamily("Moonbeam"),
                             TextWrapping = TextWrapping.Wrap
                         };
-                        
+
                         TextBlock tags = new TextBlock
                         {
                             Name = "TagLabel",
@@ -123,8 +124,8 @@ namespace MyBookshelf
                             Stretch = Stretch.Fill
                         };
 
-                        
-                        if(rd["Cover"] != DBNull.Value)
+
+                        if (rd["Cover"] != DBNull.Value)
                         {
                             Bitmap cov;
                             using (var ms = new MemoryStream((byte[])rd["Cover"]))
@@ -156,7 +157,6 @@ namespace MyBookshelf
                         Grid.SetColumn(sp, 1);
 
                         sp.Children.Add(bk);
-                        sp.Children.Add(au);
                         sp.Children.Add(format);
                         sp.Children.Add(isbn);
                         sp.Children.Add(notes);
@@ -166,31 +166,79 @@ namespace MyBookshelf
                         BookIn.Children.Add(covers);
 
                     }
+
                 }
             }
         }
 
-        private System.Drawing.Image GetCovers(byte[] pic)
+        private void ClearRows()
         {
-            MemoryStream ms = new MemoryStream(pic);
-            System.Drawing.Image cover = System.Drawing.Image.FromStream(ms);
-            return cover;
-
+            BookIn.RowDefinitions.Clear();
+            BookIn.Children.Clear();
         }
+
         
-
-
         private void Test_Click(object sender, RoutedEventArgs e)
         {
-            string sql;
-            var item = SearchTerm.SelectedItem as ComboBoxItem;
-            string choice = item.Content.ToString();
+            ClearRows();
+
+            //ComboBoxItem item = SearchTerm.SelectedItem as ComboBoxItem;
+            //string choice = item.Content.ToString();
+            //string search = SearchBox.Text;
+
+            //if (SearchTerm.SelectedIndex > -1)
+            //{
+            //    string sql;
+            //    if (choice == "Title")
+            //    {
+            //        sql = "SELECT * FROM BookInventory WHERE UserId = @id AND BookTitle = @title";
+            //        GetInventory();
+            //    }
+            //    else if (choice == "Author")
+            //    {
+            //        sql = "SELECT * FROM BookInventory WHERE UserId = @id AND BookAuthor = @au";
+            //        GetInventory();
+            //    }
+            //    else if (choice == "Format")
+            //    {
+            //        sql = "SELECT * FROM BookInventory WHERE UserId = @id AND BookTitle = @for";
+            //        GetInventory();
+            //    }
+            //    else if (choice == "ISBN")
+            //    {
+            //        sql = "SELECT * FROM BookInventory WHERE UserId = @id AND ISBN = @isbn";
+            //        GetInventory();
+            //    }
+            //    else if (choice == "Notes")
+            //    {
+            //        sql = "SELECT * FROM BookInventory WHERE UserId = @id AND Notes = @note";
+            //        GetInventory();
+            //    }
+            //    else if (choice == "Tags")
+            //    {
+            //        sql = "SELECT * FROM BookInventory WHERE UserId = @id AND Tags = @tags";
+            //        GetInventory();
+            //    }
+
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Please choose a search term");
+            //}
+            
+
         }
 
         private void Add_Click(object sender, RoutedEventArgs e)
         {
             NewBook nb = new NewBook(userId);
             nb.Show();
+        }
+
+        private void TitleLabel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ClearRows();
+            GetInventory();
         }
     }
 }

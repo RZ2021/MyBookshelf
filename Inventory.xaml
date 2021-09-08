@@ -5,18 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyBookshelf"
         mc:Ignorable="d"
-        Title="Book Inventory" Height="750" Width="1100" Background="#FF78EE78" WindowStartupLocation="CenterScreen" Cursor="">
+        Title="Book Inventory" Height="800" Width="1100" Background="#FF78EE78" WindowStartupLocation="CenterScreen" Cursor="">
     <Grid x:Name="BookInventory">
         <StackPanel>
-            <Label Name="TitleLabel" Content="Book Inventory" FontFamily="Moonbeam" FontSize="38" HorizontalContentAlignment="Center" Margin="5" />
-            <Border BorderBrush="Black" BorderThickness="1" Width="700">
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Height="550" Width="700">
+            <Label Name="TitleLabel" MouseDoubleClick="TitleLabel_MouseDoubleClick" Content="Book Inventory" FontFamily="Moonbeam" FontSize="38" HorizontalContentAlignment="Center" Margin="5" />
+            <Border BorderBrush="Black" BorderThickness="1" Width="800">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Height="550" Width="800">
 
-                    <Grid x:Name="BookIn" Width="700" ShowGridLines="True">
+                    <Grid x:Name="BookIn" Width="800" ShowGridLines="True">
+                        
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="200" />
-                            <ColumnDefinition Width="350" />
-                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="400" />
+                            <ColumnDefinition Width="200" />
                         </Grid.ColumnDefinitions>
 
 
@@ -24,15 +25,16 @@
                     
                 </ScrollViewer>
             </Border>
-            <StackPanel Orientation="Horizontal" Margin="10" Width="700">
+            <StackPanel Orientation="Horizontal" Margin="10" Width="800">
                 <ComboBox Name="SearchTerm" Width="150" Height="35" Margin="70,0,0,0" FontFamily="Moonbeam" FontSize="20">
                     <ComboBoxItem Content="Title" FontFamily="Moonbeam" FontSize="20"/>
                     <ComboBoxItem Content="Author" FontFamily="Moonbeam" FontSize="20"/>
                     <ComboBoxItem Content="Format" FontFamily="Moonbeam" FontSize="20"/>
                     <ComboBoxItem Content="ISBN" FontFamily="Moonbeam" FontSize="20"/>
+                    <ComboBoxItem Content="Notes" FontFamily="Moonbeam" FontSize="20"/>
                     <ComboBoxItem Content="Tags" FontFamily="Moonbeam" FontSize="20"/>
                 </ComboBox>
-                <TextBox Name="SearchBox" Height="35" Width="300" Margin="20,0,0,0"/>
+                <TextBox Name="SearchBox" Height="35" Width="300" Margin="20,0,0,0" FontSize="20" FontFamily="Moonbeam"/>
                 <Button x:Name="Test" Content="Search" Margin="5" HorizontalAlignment="Center" Width="100" Height="40" Click="Test_Click"/>
 
             </StackPanel>
