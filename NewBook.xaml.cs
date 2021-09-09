@@ -34,7 +34,7 @@ namespace MyBookshelf
             clicked = true;
             Microsoft.Win32.OpenFileDialog pic = new Microsoft.Win32.OpenFileDialog();
             pic.Title = "Select the cover";
-            pic.Filter = "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png";
+            pic.Filter = "PNG Files (*.png)|*.png";
             Nullable<bool> result = pic.ShowDialog();
             if(result == true)
             {

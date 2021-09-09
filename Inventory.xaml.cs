@@ -201,50 +201,91 @@ namespace MyBookshelf
         {
             ClearRows();
 
-            //ComboBoxItem item = SearchTerm.SelectedItem as ComboBoxItem;
-            //string choice = item.Content.ToString();
-            //string search = SearchBox.Text;
+            ComboBoxItem item = SearchTerm.SelectedItem as ComboBoxItem;
+            string choice = item.Content.ToString();
+            string search = SearchBox.Text;
 
-            //if (SearchTerm.SelectedIndex > -1)
-            //{
-            //    string sql;
-            //    if (choice == "Title")
-            //    {
-            //        sql = "SELECT * FROM BookInventory WHERE UserId = @id AND BookTitle = @title";
-            //        GetInventory();
-            //    }
-            //    else if (choice == "Author")
-            //    {
-            //        sql = "SELECT * FROM BookInventory WHERE UserId = @id AND BookAuthor = @au";
-            //        GetInventory();
-            //    }
-            //    else if (choice == "Format")
-            //    {
-            //        sql = "SELECT * FROM BookInventory WHERE UserId = @id AND BookTitle = @for";
-            //        GetInventory();
-            //    }
-            //    else if (choice == "ISBN")
-            //    {
-            //        sql = "SELECT * FROM BookInventory WHERE UserId = @id AND ISBN = @isbn";
-            //        GetInventory();
-            //    }
-            //    else if (choice == "Notes")
-            //    {
-            //        sql = "SELECT * FROM BookInventory WHERE UserId = @id AND Notes = @note";
-            //        GetInventory();
-            //    }
-            //    else if (choice == "Tags")
-            //    {
-            //        sql = "SELECT * FROM BookInventory WHERE UserId = @id AND Tags = @tags";
-            //        GetInventory();
-            //    }
+            if (SearchTerm.SelectedIndex > -1)
+            {
+                string sql;
+                if (choice == "Title")
+                {
+                    sql = "SELECT * FROM BookInventory WHERE UserId = @id AND BookTitle Like @search";
+                    string con = @"Data Source=MasterBlaster\SQLEXPRESS;Initial Catalog=MyBookshelf;Integrated Security=True";
+                   
 
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Please choose a search term");
-            //}
-            
+                    using (SqlConnection myConnect = new SqlConnection(con))
+                    {
+                        SqlCommand cmd = new SqlCommand(sql, myConnect);
+                        cmd.Parameters.AddWithValue("@id", 1);
+                        cmd.Parameters.AddWithValue("@search", "%" + search + "%");
+
+                        myConnect.Open();
+
+                        using (SqlDataReader rd = cmd.ExecuteReader())
+                        {
+                            while (rd.Read())
+                            {
+                                BookIn.RowDefinitions.Add(new RowDefinition());
+                                int num = BookIn.RowDefinitions.Count;
+                                if (num != 0)
+                                {
+                                    num -= 1;
+                                }
+
+                                string bk = "Title: " + rd["BookTitle"].ToString();
+                                string author = "Author: " + rd["BookAuthor"].ToString();
+                                string format = "Format: " + rd["Format"].ToString();
+                                string isbn = "ISBN: " + rd["ISBN"].ToString();
+                                string notes = "Notes: " + rd["Notes"].ToString();
+                                string tags = "Tags:\n" + rd["Tags"].ToString();
+
+                                if (rd["Cover"] != DBNull.Value)
+                                {
+                                    cover = (byte[])rd["Cover"];
+
+                                }
+
+                                GetRows(bk, author, format, isbn, notes, tags, cover, num);
+
+                            }
+
+                        }
+                    }
+                    GetInventory();
+                }
+                else if (choice == "Author")
+                {
+                    sql = "SELECT * FROM BookInventory WHERE UserId = @id AND BookAuthor = @au";
+                    GetInventory();
+                }
+                else if (choice == "Format")
+                {
+                    sql = "SELECT * FROM BookInventory WHERE UserId = @id AND BookTitle = @for";
+                    GetInventory();
+                }
+                else if (choice == "ISBN")
+                {
+                    sql = "SELECT * FROM BookInventory WHERE UserId = @id AND ISBN = @isbn";
+                    GetInventory();
+                }
+                else if (choice == "Notes")
+                {
+                    sql = "SELECT * FROM BookInventory WHERE UserId = @id AND Notes = @note";
+                    GetInventory();
+                }
+                else if (choice == "Tags")
+                {
+                    sql = "SELECT * FROM BookInventory WHERE UserId = @id AND Tags = @tags";
+                    GetInventory();
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("Please choose a search term");
+            }
+
 
         }
 
