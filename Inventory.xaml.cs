@@ -22,6 +22,7 @@ namespace MyBookshelf
     public partial class Inventory : Window
     {
         private int userId;
+        private byte[] cover;
 
         public Inventory(int user)
         {
@@ -52,123 +53,141 @@ namespace MyBookshelf
                         {
                             num -= 1;
                         }
-                        BookIn.RowDefinitions[num].Height = new GridLength(200);
 
-                        StackPanel sp = new StackPanel();
-                        sp.Orientation = Orientation.Vertical;
-                        TextBlock bk = new TextBlock
+                        string bk = "Title: " + rd["BookTitle"].ToString();
+                        string author = "Author: " + rd["BookAuthor"].ToString();
+                        string format = "Format: " + rd["Format"].ToString();
+                        string isbn = "ISBN: " + rd["ISBN"].ToString();
+                        string notes = "Notes: " + rd["Notes"].ToString();
+                        string tags = "Tags:\n" + rd["Tags"].ToString();
+                        
+                        if(rd["Cover"] != DBNull.Value)
                         {
-                            Name = "BksLabel",
-                            Text = "Title: " + rd["BookTitle"].ToString() + "   Author: " + rd["BookAuthor"].ToString(),
-                            FontSize = 20,
-                            Margin = new Thickness(10, 10, 0, 0),
-                            FontFamily = new System.Windows.Media.FontFamily("Moonbeam")
-                        };
+                            cover = (byte[])rd["Cover"];
 
-                        //TextBlock au = new TextBlock
-                        //{
-                        //    Name = "AuthLabel",
-                        //    Text = "\tAuthor: " + rd["BookAuthor"].ToString(),
-                        //    FontSize = 20,
-                        //    Margin = new Thickness(10, 10, 0, 0),
-                        //    FontFamily = new System.Windows.Media.FontFamily("Moonbeam"),
-                        //    TextWrapping = TextWrapping.Wrap
-                        //};
-
-                        TextBlock format = new TextBlock
-                        {
-                            Name = "ForLabel",
-                            Text = "Format: " + rd["Format"].ToString(),
-                            FontSize = 20,
-                            Margin = new Thickness(10, 10, 0, 0),
-                            FontFamily = new System.Windows.Media.FontFamily("Moonbeam"),
-                            TextWrapping = TextWrapping.Wrap
-                        };
-
-                        TextBlock isbn = new TextBlock
-                        {
-                            Name = "isbnLabel",
-                            Text = "ISBN: " + rd["ISBN"].ToString(),
-                            FontSize = 20,
-                            Margin = new Thickness(10, 10, 0, 0),
-                            FontFamily = new System.Windows.Media.FontFamily("Moonbeam"),
-                            TextWrapping = TextWrapping.Wrap
-                        };
-
-                        TextBlock notes = new TextBlock
-                        {
-                            Name = "NotesLabel",
-                            Text = "Notes: " + rd["Notes"].ToString(),
-                            FontSize = 20,
-                            Margin = new Thickness(10, 10, 0, 0),
-                            FontFamily = new System.Windows.Media.FontFamily("Moonbeam"),
-                            TextWrapping = TextWrapping.Wrap
-                        };
-
-                        TextBlock tags = new TextBlock
-                        {
-                            Name = "TagLabel",
-                            Text = "Tags:\n" + rd["Tags"].ToString(),
-                            FontSize = 20,
-                            Margin = new Thickness(0, 0, 30, 0),
-                            FontFamily = new System.Windows.Media.FontFamily("Moonbeam"),
-                            TextWrapping = TextWrapping.Wrap
-                        };
-
-                        System.Windows.Controls.Image covers = new System.Windows.Controls.Image
-                        {
-                            Name = "Covers",
-                            Height = 200,
-                            Width = 125,
-                            Margin = new Thickness(20, 20, 20, 20),
-                            Stretch = Stretch.Fill
-                        };
-
-
-                        if (rd["Cover"] != DBNull.Value)
-                        {
-                            Bitmap cov;
-                            using (var ms = new MemoryStream((byte[])rd["Cover"]))
-                            {
-                                cov = new Bitmap(ms);
-                            }
-
-                            using (var ms = new MemoryStream())
-                            {
-                                cov.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                                ms.Position = 0;
-
-                                var bi = new BitmapImage();
-                                bi.BeginInit();
-                                bi.CacheOption = BitmapCacheOption.OnLoad;
-                                bi.StreamSource = ms;
-                                bi.EndInit();
-                                covers.Source = bi;
-                            }
                         }
 
-                        Grid.SetRow(tags, num);
-                        Grid.SetColumn(tags, 2);
-
-                        Grid.SetRow(covers, num);
-                        Grid.SetColumn(covers, 0);
-
-                        Grid.SetRow(sp, num);
-                        Grid.SetColumn(sp, 1);
-
-                        sp.Children.Add(bk);
-                        sp.Children.Add(format);
-                        sp.Children.Add(isbn);
-                        sp.Children.Add(notes);
-
-                        BookIn.Children.Add(sp);
-                        BookIn.Children.Add(tags);
-                        BookIn.Children.Add(covers);
+                        GetRows(bk, author, format, isbn, notes, tags, cover, num);
 
                     }
 
                 }
             }
+        }
+
+        private void GetRows(string title, string author, string format, string isbn, string notes, string tags, byte[] covers, int num)
+        {
+            BookIn.RowDefinitions[num].Height = new GridLength(200);
+
+            StackPanel sp = new StackPanel();
+            sp.Orientation = Orientation.Vertical;
+
+            TextBlock bk = new TextBlock
+            {
+                Name = "BksLabel",
+                Text = title,
+                FontSize = 20,
+                Margin = new Thickness(10, 10, 0, 0),
+                FontFamily = new System.Windows.Media.FontFamily("Moonbeam"),
+                TextWrapping = TextWrapping.Wrap
+            };
+
+            TextBlock Author = new TextBlock
+            {
+                Name = "AuthLabel",
+                Text = author,
+                FontSize = 20,
+                Margin = new Thickness(10, 10, 0, 0),
+                FontFamily = new System.Windows.Media.FontFamily("Moonbeam"),
+                TextWrapping = TextWrapping.Wrap
+            };
+
+            TextBlock Format = new TextBlock
+            {
+                Name = "ForLabel",
+                Text = format,
+                FontSize = 20,
+                Margin = new Thickness(10, 10, 0, 0),
+                FontFamily = new System.Windows.Media.FontFamily("Moonbeam"),
+                TextWrapping = TextWrapping.Wrap
+            };
+
+            TextBlock Isbn = new TextBlock
+            {
+                Name = "isbnLabel",
+                Text = isbn,
+                FontSize = 20,
+                Margin = new Thickness(10, 10, 0, 0),
+                FontFamily = new System.Windows.Media.FontFamily("Moonbeam"),
+                TextWrapping = TextWrapping.Wrap
+            };
+
+            TextBlock Notes = new TextBlock
+            {
+                Name = "NotesLabel",
+                Text = notes,
+                FontSize = 20,
+                Margin = new Thickness(10, 10, 0, 0),
+                FontFamily = new System.Windows.Media.FontFamily("Moonbeam"),
+                TextWrapping = TextWrapping.Wrap
+            };
+
+            TextBlock Tags = new TextBlock
+            {
+                Name = "TagLabel",
+                Text = tags,
+                FontSize = 20,
+                Margin = new Thickness(0, 0, 30, 0),
+                FontFamily = new System.Windows.Media.FontFamily("Moonbeam"),
+                TextWrapping = TextWrapping.Wrap
+            };
+
+            System.Windows.Controls.Image Covers = new System.Windows.Controls.Image
+            {
+                Name = "Covers",
+                Height = 200,
+                Width = 125,
+                Margin = new Thickness(20, 20, 20, 20),
+                Stretch = Stretch.Fill
+            };
+
+            Bitmap cov;
+            using (var ms = new MemoryStream(covers))
+            {
+                cov = new Bitmap(ms);
+            }
+
+            using (var ms = new MemoryStream())
+            {
+                cov.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                ms.Position = 0;
+
+                var bi = new BitmapImage();
+                bi.BeginInit();
+                bi.CacheOption = BitmapCacheOption.OnLoad;
+                bi.StreamSource = ms;
+                bi.EndInit();
+                Covers.Source = bi;
+            }
+
+            Grid.SetRow(Tags, num);
+            Grid.SetColumn(Tags, 2);
+
+            Grid.SetRow(Covers, num);
+            Grid.SetColumn(Covers, 0);
+
+            Grid.SetRow(sp, num);
+            Grid.SetColumn(sp, 1);
+
+            sp.Children.Add(bk);
+            sp.Children.Add(Author);
+            sp.Children.Add(Format);
+            sp.Children.Add(Isbn);
+            sp.Children.Add(Notes);
+
+            BookIn.Children.Add(sp);
+            BookIn.Children.Add(Tags);
+            BookIn.Children.Add(Covers);
         }
 
         private void ClearRows()
