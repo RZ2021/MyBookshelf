@@ -188,6 +188,7 @@ namespace MyBookshelf
             BookIn.Children.Add(sp);
             BookIn.Children.Add(Tags);
             BookIn.Children.Add(Covers);
+
         }
 
         private void ClearRows()
@@ -201,91 +202,50 @@ namespace MyBookshelf
         {
             ClearRows();
 
-            ComboBoxItem item = SearchTerm.SelectedItem as ComboBoxItem;
-            string choice = item.Content.ToString();
             string search = SearchBox.Text;
+            string sql = "SELECT * FROM BookInventory WHERE UserId = @id AND BookTitle + BookAuthor + Format +" +
+                "ISBN + Notes + Tags Like @search";
+            string con = @"Data Source=MasterBlaster\SQLEXPRESS;Initial Catalog=MyBookshelf;Integrated Security=True";
 
-            if (SearchTerm.SelectedIndex > -1)
+
+            using (SqlConnection myConnect = new SqlConnection(con))
             {
-                string sql;
-                if (choice == "Title")
+                SqlCommand cmd = new SqlCommand(sql, myConnect);
+                cmd.Parameters.AddWithValue("@id", 1);
+                cmd.Parameters.AddWithValue("@search", "%" + search + "%");
+
+                myConnect.Open();
+
+                using (SqlDataReader rd = cmd.ExecuteReader())
                 {
-                    sql = "SELECT * FROM BookInventory WHERE UserId = @id AND BookTitle Like @search";
-                    string con = @"Data Source=MasterBlaster\SQLEXPRESS;Initial Catalog=MyBookshelf;Integrated Security=True";
-                   
-
-                    using (SqlConnection myConnect = new SqlConnection(con))
+                    while (rd.Read())
                     {
-                        SqlCommand cmd = new SqlCommand(sql, myConnect);
-                        cmd.Parameters.AddWithValue("@id", 1);
-                        cmd.Parameters.AddWithValue("@search", "%" + search + "%");
-
-                        myConnect.Open();
-
-                        using (SqlDataReader rd = cmd.ExecuteReader())
+                        BookIn.RowDefinitions.Add(new RowDefinition());
+                        int num = BookIn.RowDefinitions.Count;
+                        if (num != 0)
                         {
-                            while (rd.Read())
-                            {
-                                BookIn.RowDefinitions.Add(new RowDefinition());
-                                int num = BookIn.RowDefinitions.Count;
-                                if (num != 0)
-                                {
-                                    num -= 1;
-                                }
+                            num -= 1;
+                        }
 
-                                string bk = "Title: " + rd["BookTitle"].ToString();
-                                string author = "Author: " + rd["BookAuthor"].ToString();
-                                string format = "Format: " + rd["Format"].ToString();
-                                string isbn = "ISBN: " + rd["ISBN"].ToString();
-                                string notes = "Notes: " + rd["Notes"].ToString();
-                                string tags = "Tags:\n" + rd["Tags"].ToString();
+                        string bk = "Title: " + rd["BookTitle"].ToString();
+                        string author = "Author: " + rd["BookAuthor"].ToString();
+                        string format = "Format: " + rd["Format"].ToString();
+                        string isbn = "ISBN: " + rd["ISBN"].ToString();
+                        string notes = "Notes: " + rd["Notes"].ToString();
+                        string tags = "Tags:\n" + rd["Tags"].ToString();
 
-                                if (rd["Cover"] != DBNull.Value)
-                                {
-                                    cover = (byte[])rd["Cover"];
-
-                                }
-
-                                GetRows(bk, author, format, isbn, notes, tags, cover, num);
-
-                            }
+                        if (rd["Cover"] != DBNull.Value)
+                        {
+                            cover = (byte[])rd["Cover"];
 
                         }
+
+                        GetRows(bk, author, format, isbn, notes, tags, cover, num);
+
                     }
-                    GetInventory();
-                }
-                else if (choice == "Author")
-                {
-                    sql = "SELECT * FROM BookInventory WHERE UserId = @id AND BookAuthor = @au";
-                    GetInventory();
-                }
-                else if (choice == "Format")
-                {
-                    sql = "SELECT * FROM BookInventory WHERE UserId = @id AND BookTitle = @for";
-                    GetInventory();
-                }
-                else if (choice == "ISBN")
-                {
-                    sql = "SELECT * FROM BookInventory WHERE UserId = @id AND ISBN = @isbn";
-                    GetInventory();
-                }
-                else if (choice == "Notes")
-                {
-                    sql = "SELECT * FROM BookInventory WHERE UserId = @id AND Notes = @note";
-                    GetInventory();
-                }
-                else if (choice == "Tags")
-                {
-                    sql = "SELECT * FROM BookInventory WHERE UserId = @id AND Tags = @tags";
-                    GetInventory();
-                }
 
+                }
             }
-            else
-            {
-                MessageBox.Show("Please choose a search term");
-            }
-
 
         }
 
@@ -299,6 +259,12 @@ namespace MyBookshelf
         {
             ClearRows();
             GetInventory();
+        }
+
+        private void ResetButton_Click(object sender, RoutedEventArgs e)
+        {
+            GetInventory();
+            SearchBox.Text = "";
         }
     }
 }

@@ -96,6 +96,7 @@ namespace MyBookshelf
                     cmd.Parameters.AddWithValue("@cov", cover);
                     int result = cmd.ExecuteNonQuery();
                     con.Close();
+
                     if (result > 0)
                     {
                         MessageBox.Show("Your book has been added!");
